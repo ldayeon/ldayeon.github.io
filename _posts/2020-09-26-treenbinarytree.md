@@ -1,0 +1,136 @@
+---
+title:  "트리와 이진 트리"
+subtitle: "트리(Tree)와 이진 트리(Binary Tree)에 대하여"
+author: 취준생🐈
+
+categories: algorithm
+tags:
+- algorithm
+- Tree
+- Binary Tree
+- Search Tree
+- 트리
+- 이진 트리
+
+last_modified_at:   2020-09-26
+toc: true
+toc_sticky: true
+toc_label: "Post's Contents"
+
+---
+
+<br><br>
+
+## 기본 개념
+
+### 트리(Tree)
+
++ 노드(node)들과 노드를 연결하는 링크(link)로 이루어짐
+  + 루트(Root) 노드 : 맨 위의 노드
+  + 링크 : edge, branch 라고도 부름
++ 부모(parent)와 자식(child) 관계로 조직도의 구조를 이루는 것
+  + 루트 노드를 제외한 모든 노드는 유일한 부모 노드를 가짐
+  + 형제(sibling) 관계 : 부모가 동일한 노드들의 관계
+  + 리프(leaf) 노드 : 자식이 없는 노드
+    + 내부 노드 : 리프 노드가 아닌 노드들
+  + 조상 - 자손 관계 : 부모 - 자식 관계를 확장한 것으로, 어떤 노드를 기준으로 부모노드 ~ 루트노드는 **'조상노드'**, 자식노드 ~ 리프 노드는 **'자손 노드'** 이다.
++ 서브 트리 :  트리의 한 노드와 그의 자손들로 만들어진 트리
++ Level : 루트(level 1) 노드부터 리프 노드까지 레벨을 나눈 것
++ Height :  트리가 가진 최대 level
+
+<br>
+
+### 트리(Tree)의 기본 성질
+
++ 노드가 N개일 때, 링크는 N-1
++ 루트 노드에서 어떤 노드까지 가는 경로는 유일함
+  + 따라서, 어떤 노드에서 다른 노드까지 가는 모든 경로는 유일함
+
+<br><br>
+
+---
+
+<br>
+
+### 이진 트리(Binary Tree)
+
++ 각 노드는 최대 2개의 자식을 가짐
++ 각각의 자식 노드는 자신이 부모의 Left child인지 Right child인지 지정됨 (자식이 1명인 경우에도)
+  + 따라서, 같은 노드일지라도 Left와 Right가 바뀌면 *다른 Tree*가 됨
+
+###### [이진 트리 응용]
+
+1. Expression Tree
+   : 수식 계산의 순서를 나타낸 Tree
+2. Hoffman Code
+   : 알파벳을 인코딩할 때 파일의 크기가 최소가 되도록 한 것
+   : 루트 노드에서 알파벳 노드까지 가는 길을 확인하여 인코딩할 수 있음
+
+<br>
+
+### Full & Complete Binary Tree
+
++ Full binary tree : 모든 Level의 노드가 꽉 차 있는 tree
++ Complete binary tree : 마지막 Level을 제외한 모든 Level의 노드가 꽉 차 있고 *마지막 Level은 오른쪽부터 node가 비어있는* tree
++ 높이가 h인 Full binary tree의 노드 갯수 : 2^h - 1
++ 노드가 N개인 Full or Complete binary tree의 높이 : O(logN)
+
+<br><br>
+
+## 이진 트리의 순회(Traversal)
+
+### 순회 방법
+
++ 중순회(Inorder)
+  1. r(root node)와 r의 Left child를 root로 하는 TL, r의 Right child를 root로 하는 TR로 나누기
+  2. TL을 inorder로 순회
+  3. r을 순회
+  4. TR을 inorder로 순회
+
+  + TL이 노드 1개로 이루어질때까지 반복
+    ```cpp
+    Inorder(x){
+      if(x!=NULL){
+        Inorder(left[x]);
+        printf(key[x]); //node의 value 출력
+        Inorder(right[x]);
+      }
+    }
+    ```
+
+    <br>
++ 선순위(Preorder)
+  + 중순위에서 print를 맨 처음으로
+    <br>
++ 후순위(Postorder)
+  + 중순위에서 print를 마지막으로
+    <br>
++ 레벨오더(Level-order)
+  + 레벨 순으로 방문, 같은 레벨은 왼->오
+  + queue를 이용해 구현
+    1. 큐에 root 노드를 넣기
+    2. 큐에서 한 노드를 꺼내고 자식 노드를 큐에 넣기
+    3. 2.를 반복
+
+    ```cpp
+    Level{
+         visit root;
+         Q.push(root);
+         while(!Q.empty()){
+           v = Q.top();
+           Q.pop();
+           visit children of v;
+           Q.push(v);
+         }
+       }
+    ```
+
+<br><br><br><br>
+
+---
+
+### License
+
+인프런 강좌 - 영리한 프로그래밍을 위한 알고리즘 강좌(권오흠 교수님) 참고
+<br>
+<br>

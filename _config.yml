@@ -10,16 +10,16 @@
 # Review documentation to determine if you should use `theme` or `remote_theme`
 # https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/#installing-the-theme
 
-# theme                  : "minimal-mistakes-jekyll"
+theme                  : "minimal-mistakes-jekyll"
 # remote_theme           : "mmistakes/minimal-mistakes"
 minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale                   : "en-US"
-title                    : "취준생🐈의 기술 블로그"
+title                    : "🐈의 기술 블로그"
 title_separator          : "-"
 subtitle                 : 
-name                     : "취준생🐈"
+name                     : "🐈"
 description              : "👩🏻‍🏫알고리즘 👩🏻‍💻프로그래밍 🤷🏻‍♀️공부 블로그"
 url                      : "https://ldayeon.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
@@ -51,9 +51,9 @@ reCaptcha:
   secret                 :
 atom_feed:
   path                   : # blank (default) uses feed.xml
-search                   : # true, false (default)
-search_full_content      : # true, false (default)
-search_provider          : # lunr (default), algolia, google
+search                   : true # true, false (default)
+search_full_content      : true # true, false (default)
+search_provider          : lunr # lunr (default), algolia, google
 algolia:
   application_id         : # YOUR_APPLICATION_ID
   index_name             : # YOUR_INDEX_NAME
@@ -93,7 +93,7 @@ analytics:
 
 # Site Author
 author:
-  name             : "취준생🐈"
+  name             : "🐈"
   avatar           : "/assets/images/anyang.jpg"
   bio              : "공부🤷"
   location         : "South Korea"

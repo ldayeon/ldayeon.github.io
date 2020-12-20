@@ -1,7 +1,6 @@
 ---
 title:  "트리와 이진 트리"
 subtitle: "트리(Tree)와 이진 트리(Binary Tree)에 대하여"
-author: 취준생🐈
 
 categories: algorithm
 tags:
@@ -11,7 +10,7 @@ tags:
 - Search Tree
 - 트리
 - 이진 트리
-
+author_profile: true
 last_modified_at:   2020-09-26
 toc: true
 toc_sticky: true

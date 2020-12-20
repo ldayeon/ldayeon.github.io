@@ -2,7 +2,7 @@
 title:  "트리와 이진 트리"
 subtitle: "트리(Tree)와 이진 트리(Binary Tree)에 대하여"
 
-categories: algorithm
+categories: Algorithm
 tags:
 - algorithm
 - Tree
@@ -18,11 +18,11 @@ toc_label: "Post's Contents"
 
 ---
 
-<br><br>
+<br>
 
-## 기본 개념
+# 기본 개념
 
-### 트리(Tree)
+## 트리(Tree)
 
 + 노드(node)들과 노드를 연결하는 링크(link)로 이루어짐
   + 루트(Root) 노드 : 맨 위의 노드
@@ -39,7 +39,7 @@ toc_label: "Post's Contents"
 
 <br>
 
-### 트리(Tree)의 기본 성질
+## 트리(Tree)의 기본 성질
 
 + 노드가 N개일 때, 링크는 N-1
 + 루트 노드에서 어떤 노드까지 가는 경로는 유일함
@@ -51,13 +51,13 @@ toc_label: "Post's Contents"
 
 <br>
 
-### 이진 트리(Binary Tree)
+## 이진 트리(Binary Tree)
 
 + 각 노드는 최대 2개의 자식을 가짐
 + 각각의 자식 노드는 자신이 부모의 Left child인지 Right child인지 지정됨 (자식이 1명인 경우에도)
   + 따라서, 같은 노드일지라도 Left와 Right가 바뀌면 *다른 Tree*가 됨
 
-###### [이진 트리 응용]
+### [이진 트리 응용]
 
 1. Expression Tree
    : 수식 계산의 순서를 나타낸 Tree
@@ -67,7 +67,7 @@ toc_label: "Post's Contents"
 
 <br>
 
-### Full & Complete Binary Tree
+## Full & Complete Binary Tree
 
 + Full binary tree : 모든 Level의 노드가 꽉 차 있는 tree
 + Complete binary tree : 마지막 Level을 제외한 모든 Level의 노드가 꽉 차 있고 *마지막 Level은 오른쪽부터 node가 비어있는* tree
@@ -76,9 +76,9 @@ toc_label: "Post's Contents"
 
 <br><br>
 
-## 이진 트리의 순회(Traversal)
+# 이진 트리의 순회(Traversal)
 
-### 순회 방법
+## 순회 방법
 
 + 중순회(Inorder)
   1. r(root node)와 r의 Left child를 root로 하는 TL, r의 Right child를 root로 하는 TR로 나누기
@@ -128,8 +128,8 @@ toc_label: "Post's Contents"
 
 ---
 
-### License
+>## License
+>
+>인프런 강좌 - 영리한 프로그래밍을 위한 알고리즘 강좌(권오흠 교수님) 참고
 
-인프런 강좌 - 영리한 프로그래밍을 위한 알고리즘 강좌(권오흠 교수님) 참고
-<br>
 <br>

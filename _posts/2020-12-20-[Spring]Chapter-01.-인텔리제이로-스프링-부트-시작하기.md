@@ -116,4 +116,4 @@ dependencies {
 > **[참고]**
 > 참고 도서 : 스프링 부트와 AWS로 혼자 구현하는 웹 서비스 (이동욱 저)
 >
-> Github : https://github.com/ldayeon/aws-spring-webservice
+> Github : <a href="https://github.com/ldayeon/aws-spring-webservice">https://github.com/ldayeon/aws-spring-webservice</a>

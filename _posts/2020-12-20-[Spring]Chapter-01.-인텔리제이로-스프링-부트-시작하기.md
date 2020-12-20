@@ -15,7 +15,7 @@ toc_sticky: true
 toc_label: "Post's Contents"
 ---
 
-[TOC]
+
 
 <br>
 
@@ -32,15 +32,15 @@ toc_label: "Post's Contents"
 
 # 2. Gradle 프로젝트를 스트린 부트 프로젝트로 변경하기
 
-### Gradle과 Spring Boot
+## Gradle과 Spring Boot
 
-#### (1) Gradle
+### (1) Gradle
 
 + `Gradle`은 빌드 자동화 도구
   + Groovy 문법을 사용하기 때문에 XML문법 기반인 `Maven`보다 가독성 좋음
   + `build.gradle`파일에서 Library 의존성 설정
 
-#### (2) Spring Boot
+### (2) Spring Boot
 
 + Spring Boot : `Spring Framework`의 설정에 대한 단점을 보완한 프로젝트
   + 자체 Tomcat 서버를 사용하기 때문에 따로 설정하지 않아도 됨
@@ -48,7 +48,7 @@ toc_label: "Post's Contents"
 
 <br><br>
 
-### build.gradle 설정
+## build.gradle 설정
 
 ```groovy
 buildscript{
@@ -97,7 +97,7 @@ dependencies {
 
 # 3. .gitignore 파일 설정
 
-### .ignore 파일
+## .ignore 파일
 
 + GitHub에 업로드 시 특정 파일이나 폴더를 관리 대상에서 제외하는 설정을 저장한 파일
 + Intellij에서는 기본적으로 제공하는 것이 없기 때문에 `.ignore` 플러그인을 설치하여 사용

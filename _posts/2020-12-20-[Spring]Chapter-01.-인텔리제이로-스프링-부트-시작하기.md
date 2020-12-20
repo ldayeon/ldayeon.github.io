@@ -15,16 +15,20 @@ toc_sticky: true
 toc_label: "Post's Contents"
 ---
 
+[TOC]
+
+<br>
 
 # 1.프로젝트 생성하기
 
 ![GroupId와 ArtifactId](https://user-images.githubusercontent.com/37764581/102707847-c7144000-42e1-11eb-84cf-e8db7e8477b5.png)
 
 + GroupId : 프로젝트를 구분하는 고유 식별 이름
+  
   + package 명명 규칙을 따라야 함
 + ArtifactId : 버전 정보를 생략한 jar 파일 이름
 
-  
+<br><br>
 
 # 2. Gradle 프로젝트를 스트린 부트 프로젝트로 변경하기
 
@@ -42,7 +46,7 @@ toc_label: "Post's Contents"
   + 자체 Tomcat 서버를 사용하기 때문에 따로 설정하지 않아도 됨
   + 의존성 관리 자동화
 
-  
+<br><br>
 
 ### build.gradle 설정
 
@@ -89,7 +93,7 @@ dependencies {
   + dependencies : 프로젝트에 필요한 의존성 선언
     + 버전을 명시하지 않아야 위*(ext블록)*의 전역변수 사용
 
-  
+<br><br>
 
 # 3. .gitignore 파일 설정
 
@@ -108,8 +112,10 @@ dependencies {
 + .gradle 폴더 : Gradle이 사용하는 폴더로 task로 생성된 파일이 저장되는 폴더
 + .idea 폴더 : Intellij의 IDE를 사용 시 해당 프로젝트의 설정값들이 저장되는 폴더
 
-      
-      
+  
+
+<br><br><br>
+
 > **[참고]**
 > 참고 도서 : 스프링 부트와 AWS로 혼자 구현하는 웹 서비스 (이동욱 저)
 >

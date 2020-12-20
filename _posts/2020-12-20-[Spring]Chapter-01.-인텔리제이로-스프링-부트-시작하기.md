@@ -10,9 +10,6 @@ tags:
 - Web Programming
 
 last_modified_at:   2020-12-20
-toc: true
-toc_sticky: true
-toc_label: "Post's Contents"
 ---
 
 

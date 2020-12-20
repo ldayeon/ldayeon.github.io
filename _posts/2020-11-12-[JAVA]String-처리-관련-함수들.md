@@ -8,9 +8,6 @@ tags:
 - 코딩테스트
 author_profile: true
 last_modified_at:   2020-11-12
-toc: true
-toc_sticky: true
-toc_label: "Post's Contents"
 ---
 
 #### 📝 String 비교 함수

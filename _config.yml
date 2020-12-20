@@ -280,6 +280,9 @@ defaults:
       share: true
       related: true
       classes: wide
+      toc: true
+      toc_sticky: true
+      toc_label: "Post's Contents"
 
   # _pages
   - scope:

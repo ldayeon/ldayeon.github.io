@@ -71,7 +71,7 @@ public class Application { //main class
 
 ```
 
-+ `@SpringBootApplication` Annotation
++ `@SpringBootApplication` 
   + Springboot의 자동설정
   + 스프링 Bean 읽기&생성 모두 자동으로 설정
   + 이 코드가 있는 곳부터 설정을 읽음 → 항상 프로젝트의 최상단에 있어야 함
@@ -98,10 +98,10 @@ public class HelloController {
 }
 ```
 
-+ `@RestController` Annotation
++ `@RestController` 
   + JSON를 반환하는 Controller로 만듦
   + `@ResponseBody`를 메소드마다 선언하지 않아도 됨
-+ `@GetMapping` Annotation
++ `@GetMapping`
   + Get 요청을 받을 수 있는 API 생성
   + `@RequestMapping(method=RequestMethod.GET)`를 대신하여 사용
 
@@ -303,19 +303,102 @@ public class HelloController {
     public String hello(){
         return "hello";
     }
-/*추가된 부분(여기부터)*/
+    
+	/*추가된 부분(여기부터)*/
     @GetMapping("/hello/dto")
     public HelloResponseDto helloDto(@RequestParam("name") String name, @RequestParam("amount") int amount){
         return new HelloResponseDto(name, amount);
     }
+    /*추가된 부분(여기까지)*/
 }
-/*추가된 부분(여기까지)*/
 
 ```
 
 + `@RequestParam`
   +  외부에서 넘긴 파라미터를 가져오는 Annotation
-  + 외부에서 `name(@RequestParam("name"))`이라는 이름으로 넘긴 파라미터를 메소드 파라미터 `name(String name)`에 저장
+  + 외부에서 `name`이라는 이름으로 넘긴 값을 메소드 파라미터 변수 `name`에 저장
+
+<br>
+
+### HelloControllerTest.java에 Test code 추가
+
+```java
+package com.ldayeon.springboot.web;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+
+//JUnit에 내장된 실행자 외에 다른 실행자를 실행시킴
+//여기서는 스프링 실행자인 'SpringRunner' 사용 - SpringBootTest와 JUnit 사이에 연결자 역할
+@RunWith(SpringRunner.class)
+//사용 가능 Annotation : @Controller, @ControllerAdvice
+//사용 불가 Annotation : @Service, @Component, @Repository
+@WebMvcTest(controllers = HelloController.class)
+public class HelloControllerTest {
+    @Autowired
+    private MockMvc mvc;
+
+    @Test
+    public void hello가_리턴된다() throws Exception{
+        String hello="hello";
+
+        mvc.perform(get("/hello"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(hello));
+    }
+    
+    /*추가된 부분(여기부터)*/
+    @Test
+    public void helloDto가_리턴된다() throws Exception{
+        String name="hello";
+        int amount = 1000;
+
+        mvc.perform(get("/hello/dto")
+                .param("name", name)
+                .param("amount",String.valueOf(amount)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is(name))) //jsonPath : json 응답ㄱ값을 필드별로 검증할 수 있는 메소드
+                .andExpect(jsonPath("$.amount", is(amount)));
+    }
+    /*추가된 부분(여기까지)*/
+}
+
+```
+
++ `param`
+  + API 테스트할 때 사용될 요청 파라미터 설정
+  + String만 가능함
++ `jasonPath`
+  + JSON 응답값을 필드별로 검증할 수 있는 메소드
+  + `$`를 기준으로 필드명을 명시 ex. `$.name`
+
+<br>
+
+## JSON이란
+
+### JavaScript Object Notation
+
+데이터를 저장하거나 전송할 때 많이 사용되는 경량의 데이터 교환 형식
+
++ Server와 Client 간의 교류에서 일반적으로 사용
+
++ *Postman에서 사용했던 parameter post를 넘기는 방식과 같은 방식*
+
+  ```json
+  {
+  	"name" : "ldayeon",
+  	"amount" : "1,000,000,000"
+  }
+  ```
 
 <br><br>
 

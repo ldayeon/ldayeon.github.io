@@ -1,4 +1,4 @@
-# 공부_블로그(ldayeon.github.io)
+# 공부_기록_블로그(ldayeon.github.io)
 
 👩‍🎓 List
 + Spring Framework

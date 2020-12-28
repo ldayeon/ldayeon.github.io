@@ -48,8 +48,8 @@ last_modified_at:   2020-12-24
 
 ### 문제 배경
 
-관계형 데이터베이스가 SQL만 인식할 수 있기 때문에 기본적인 CRUD(Create, Read, UPdate, Delete) SQL을 매번 생성해야 함.
-	→ 애플리케이션 코드 <<< SQL 코드
+관계형 데이터베이스가 SQL만 인식할 수 있기 때문에 기본적인 CRUD(Create, Read, UPdate, Delete) SQL을 매번 생성해야 함.<br>
+	→ 애플리케이션 코드 < SQL 코드
 
 <br>
 
@@ -64,97 +64,169 @@ last_modified_at:   2020-12-24
     + 따라서, 객체에 데이터베이스를 저장하려고 하면 문제 발생
     + 1:N, 상속 등의 다양한 객체 모델링을 데이터베이스로 구현할 수 X
 
+<br>
+
 ### ✔ JPA가 이러한 문제점을 해결
 
-+ 중간에서 두 패러다임을 일치시켜주기 위한 기술
++ 중간에서 두 패러다임을 일치시켜주기 위한 기술(인터페이스)
   + 개발자는 객체지향적으로 프로그래밍 → JPA가 이를 관계형 데이터베이스에 맞게 SQL 생성
 
-### (1) TDD (Test-Driven Development)
-
-+ TDD : 테스트가 주도하는 개발
-  + 테스트 코드를 먼저 작성하고 개발
-
-### (2) 단위 테스트 (Unit Test)
-
-+ 단위 테스트 : TDD의 첫 단계인 기능 단위의 테스트 코드를 작성하는 것
-  + TDD와 다르게 테스트 코드를 꼭 먼저 작성해야하는 것이 아님
-
 <br>
 
-## 단위 테스트의 필요성
+### Spring Data JPA
 
-1. 개발 초기에 문제 발견 가능
-2. 코드 리팩토링 & 라이브러리 업그레이드 등에서 기존 기능이 올바르게 작동하는지 확인 가능
-3. 실제 문서를 제공. 즉, 단위 테스트 자체가 문서로 사용될 수 있음
+JPA를 사용하기 위해서는 구현체 필요 ex. Hibernate, Eclipse Link 등 <br>
 
-<br>
+  → 하지만 Spring에서는 구현체를 직접 다루지 않고 **Spring Data JPA**라는 모듈 이용<br><br>
 
-## 테스트 프레임워크
+`JPA ← Hibernate ← Spring Data JPA` 의 관계성을 가짐<br>
 
-### xUnit
-
-개발환경(x)에 따라 Unit 테스트를 도와주는 도구
-
-+ JUnit(Java), DBUnit(DB), CppUnit(C++) 등
-
-책에서는 JUnit 사용
++ 구현체 교체의 용이성
+  + Hibernate 외의 다른 구현체로 십게 교체 가능
++ 저장소 교체의 용이성
+  + 관계형 데이터베이스 외에 다른 저장소로 쉽게 교체 가능 ex. MongoDB
+  + Spring Data의 하위 프로젝트는 CRUD의 인터페이스가 같기 때문 (Spring Data JPA, Spring Data Redis, Spring Data MongoDB 등)
 
 <br><br>
 
-# 2. HelloController 테스트 코드 작성하기
+## 실무에서 JPA
 
-## src/main/java에 com.ldayeon.springboot package 생성
+### 실무에서 사용하지 못하는 이유
 
-### Application.java 파일 생성
-
-```java
-package com.ldayeon.springboot;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-public class Application { //main class
-    public static void main(String[] args){
-        SpringApplication.run(Application.class,args);
-    }
-}
-
-```
-
-+ `@SpringBootApplication` 
-  + Springboot의 자동설정
-  + 스프링 Bean 읽기&생성 모두 자동으로 설정
-  + 이 코드가 있는 곳부터 설정을 읽음 → 항상 프로젝트의 최상단에 있어야 함
-+ `SpringApplication.run` : 내장 WAS(톰캣x → Jar 패키징 파일 사용)를 실행
+1. 높은 러닝 커브를 야기
+2. 객체지향 프로그래밍과 관계형 데이터베이스를 둘 다 이해
 
 <br>
 
-## src/main/java에 com.ldayeon.springboot.web package 생성
+### JPA가 주는 보상
 
-### HelloController.java 생성
+1. CRUD 쿼리를 직접 작성할 필요 X
+2. 객체지향 프로그래밍 가능
+
+<br>
+
+
+
+> #### 👩‍💻 여기서부터 본격적이 웹 사이트 구축
+
+<br><br>
+
+# 2. 프로젝트에 Spring Data JPA 적용하기
+
+## build.gradle에 의존성 등록
+
+### build.gradle에 코드 추가
 
 ```java
-package com.ldayeon.springboot.web;
+buildscript{
+    ext{ //전역변수 선언
+        springBootVersion = '2.1.9.RELEASE'
+    }
+    repositories{
+        mavenCentral()
+        jcenter()
+    }
+    dependencies{
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
-@RestController
-public class HelloController {
-    @GetMapping("/hello")
-    public String hello(){
-        return "hello";
+group 'com.aws.spring'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories { //라이브러리를 다운받을 원격저장소 선택 - mavenCentral, jcenter
+    mavenCentral()
+    jcenter()
+}
+
+dependencies { //프로젝트에 필요한 의존성 선언(버전 명시하지 않아야 위의 전역변수 사용)
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.projectlombok:lombok') 
+    compile('org.springframework.boot:spring-boot-starter-data-jpa') /*추가된 부분*/
+    compile('com.h2database:h2') /*추가된 부분*/
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+```
+
++ `Spring-boot-starter-data-jpa` 
+  + 스프링 부트용 Spring Data JPA 추상화 라이브러리
+  + 스프링 부트 버전에 맞춰 자동으로 JPA관련 라이브러리들의 버전을 관리
++ h2
+  + 인메모리 관계형 데이터베이스
+  + 별도의 설치가 필요 없이 프로젝트 의존성만으로 관리할 수 있음
+  + 메모리에서 실행
+    + 애플리케이션을 재시작할 때마다 초기화된다는 점을 이용하여 테스트 용도로 많이 사용
+  + JPA의 테스트, 로컬 환경에서의 구동에서 활용
+
+<br>
+
+## src/main/java에 com.ldayeon.springboot.domain package 생성
+
++ domain package
+  + 게시글, 댓글, 회원, 정산, 결제 등 SW에 대한 요구사항 또는 문제 영역
+  + 기존에 MyBatis와 같은 쿼리 매퍼를 사용하 때 `dao` 패키지와 비슷
+    + 도메인 = xml에 쿼리를 담는 일 + 클래스에 쿼리의 결과를 담는 일
+
+<br>
+
+### src/java/com.ldayeon.springboot.domain에 posts package생성 후 그 안에 Posts.java 추가
+
+```java
+package com.ldayeon.springboot.domain.posts;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Getter
+@NoArgsConstructor
+@Entity
+public class Posts {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(length=500, nullable = false)
+    private String title;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String content;
+
+    private String author;
+    
+    @Builder
+    public Posts(String title, String content, String author){
+        this.title=title;
+        this.content=content;
+        this.author=author;
     }
 }
 ```
 
-+ `@RestController` 
-  + JSON를 반환하는 Controller로 만듦
-  + `@ResponseBody`를 메소드마다 선언하지 않아도 됨
-+ `@GetMapping`
++ `Posts class` 
+  + 실제 DB의 테이블과 매칭될 클래스
+  + Entity 클래스
+  + DB에 쿼리를 날리는 것 X → Entity 클래스의 수정을 통해 작업 O
+
+**[JPA에서 제공하는 Annotation]**
+
++ `@Entity`
   + Get 요청을 받을 수 있는 API 생성
   + `@RequestMapping(method=RequestMethod.GET)`를 대신하여 사용
++ `@Id`
++ 
++ `@GeneratedValue`
++ `@Column`
 
 <br>
 

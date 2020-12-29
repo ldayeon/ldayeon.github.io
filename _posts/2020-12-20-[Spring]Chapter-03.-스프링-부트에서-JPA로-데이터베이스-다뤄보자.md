@@ -270,54 +270,25 @@ Example.builder()
 ### PostsRepository.java 생성
 
 ```java
-package com.ldayeon.springboot.web;
+package com.ldayeon.springboot.domain.posts;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@RunWith(SpringRunner.class)
-@WebMvcTest(controllers = HelloController.class)
-public class HelloControllerTest {
-    @Autowired
-    private MockMvc mvc;
-
-    @Test
-    public void hello가_리턴된다() throws Exception{
-        String hello="hello";
-
-        mvc.perform(get("/hello"))
-                .andExpect(status().isOk()) 
-                .andExpect(content().string(hello));
-    }
+public interface PostsRepository extends JpaRepository<Posts, Long> {
 }
 ```
 
-+ `@RunWith(SpringRunner.class)`
-  + JUnit에 내장된 실행자 외에 다른 실행자를 실행시킴
-  + 여기서는 스프링 실행자인 'SpringRunner' 사용
-    + SpringBootTest와 JUnit 사이에 연결자 역할
-+ `@WebMvcTest(controllers = HelloController.class)` 
-  + 사용 가능 Annotation : @Controller, @ControllerAdvice
-  + 사용 불가 Annotation : @Service, @Component, @Repository
-+ `@Autowired`
-  + Spring이 관리하는 Bean을 주입받기
-+ `MockMvc mvc`
-  + 웹API Test할 때 사용
-  + GET, POST 등 API 테스트 가능
-+ `mvc.perform(get("/hello"))`
-  + `/hello` 주소로 Get 요청 받기
-+ `.andExpect(status().isOk())`
-  + mvc.perform의 결과 검증 & Header의 Status 검증
-+ `.andExpect(content().string(hello))`
-  + ResponseBody 검증 & Controller에서 반환한 값 확인
++ `JpaRepository`
+  + MyBatis나 ibatis에서 `Dao`로 불리는 DB Layer 접근자
+  + JPA에서는 `Repository`라고 부름
+  + `JpaRepository<Entity class, PK타입>`을 상송하면 기본적인 CRUD 메소드가 자동 생성
+  + Entity 클래스와 Entity Repository는 함께 위치해야 함
+
+## 테스트 코드 작성 
+
+### domain.posts package 생성 및 PostsRepositoryTest.java 생성
+
+
 
 <br><br>
 

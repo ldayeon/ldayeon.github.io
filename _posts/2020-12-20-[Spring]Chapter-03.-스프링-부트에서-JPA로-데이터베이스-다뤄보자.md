@@ -284,11 +284,115 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
   + `JpaRepository<Entity class, PK타입>`을 상송하면 기본적인 CRUD 메소드가 자동 생성
   + Entity 클래스와 Entity Repository는 함께 위치해야 함
 
-## 테스트 코드 작성 
+## src/test/java에 com.ldayeon.springboot.domain.posts package 생성 
 
-### domain.posts package 생성 및 PostsRepositoryTest.java 생성
+### PostsRepositoryTest.java 생성
 
+```java
+package com.ldayeon.springboot.domain.posts;
 
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class PostsRepositoryTest {
+    @Autowired
+    PostsRepository postsRepository;
+
+    @After
+    public void cleanup(){
+        postsRepository.deleteAll();
+    }
+
+    @Test
+    public void 게시글저장_불러오기() {
+        //given
+        String title = "테스트 게시글";
+        String content = "테스트 본문";
+
+        postsRepository.save(Posts.builder()
+                .title(title)
+                .content(content)
+                .author("dayeon964@naver.com")
+                .build()
+        );
+
+        //when
+        List<Posts> postsList = postsRepository.findAll();
+
+        //then
+        Posts posts = postsList.get(0);
+        assertThat(posts.getTitle()).isEqualTo(title);
+        assertThat(posts.getContent()).isEqualTo(content);
+    }
+}
+```
+
++ `@After`
+  + Junit에서 단위 테스트(`@Test`)가 끝날 때마다 수행되는 메소드를 지정
+  + 테스트간 데이터 침범을 막기위해 사용
++ `postsRepository.save`
+  + 테이블 `posts`에 insert/update 쿼리를 실행
+  + id값이 있다면 update, 없다면 insert 실행
++ `postsRepository.findAll()`
+  + 테이블 posts에 있는 모든 데이터를 조회
+
+### src/main/resources에 application.properies 생성
+
+```properties
+spring.jpa.show_sql = true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+```
+
++ `spring.jpa.show_sql`
+  + 콘솔에 SQL 쿼리 로그를 보이게 할 것인지 설정
++ `spring.jpa.properties.hibernate.dialect`
+  + H2의 쿼리 문법을 MySQL 쿼리 문법으로 바꾸도록 설정
+
+<br><br>
+
+# 4. 등록/수정/조회 API 만들기
+
+API를 만들기 위해서는 *3개의 Class* 가 필요하다.<br>
+
+1. Request 데이터를 받을 **Dto**
+2. API 요청을 받을 **Controller**
+3. 트랜잭션, 도메인 기능 간의 순서를 보장하는 **Service**
+
+<br><br>
+
+## Spring 웹 계층
+
++ Web Layer
+  + Controller(`@Controller`)와 JSP/Freemarker 등의 뷰 템플릿
+  + 필터(`@Filter`), 인터셉터, 컨트롤러 어드바이스(`@ControllerAdvice`) 등 외부 요청과 응답에 대한 전반적인 영역
++ Service Layer
+  + `@Service`에 사용되는 서비스 영역
+  + 일반적으로 Controller와 Dao 중간 영역
+  + `@Transactional`이 사용되는 영역
++ Repository Layer
+  + Database와 같이 데이터 저장소에 접근하는 영역
+  + Dao 영역과 비슷
++ Dtos(Data Transfer Object)
+  + 계층 간에 데이터 교환을 위한 객체들의 영역
+  + 뷰 템플릿 엔진에서 사용될 객체나 Repository Layer에서 결과로 넘겨준 객체 등
++ Domain Model
+  + 도메인이라 불리는 개발 대상을 모든 사람이 동일한 관점에서 이해할 수 있고 공유할 수 있도록 단순화시킨 것
+
+✅ 비즈니스 로직을 처리하는 곳은 ''**도메인**''
+
+<br>
+
+### src/main/javaPostsApiController.java 생성
 
 <br><br>
 

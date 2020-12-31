@@ -394,6 +394,61 @@ API를 만들기 위해서는 *3개의 Class* 가 필요하다.<br>
 
 ### src/main/javaPostsApiController.java 생성
 
+```java
+package com.ldayeon.springboot.web;
+
+import com.ldayeon.springboot.service.posts.PostsService;
+import com.ldayeon.springboot.web.dto.PostsSaveRequestDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RequiredArgsConstructor
+@RestController
+public class PostsApiController {
+    private final PostsService postsService;
+
+    @PostMapping("/api/v1/posts")
+    public Long save(@RequestBody PostsSaveRequestDto requestDto){
+        return postsService.save(requestDto);
+    }
+}
+```
+
++ `/api/v1/posts` 주소를 요청하였을 때 `postsService.save(requestDto)`를 반환
+  + `@RestController`가 JSON을 반환할 수 있도록 설정해줌
+
+<br>
+
+## src/main/java에 com.ldayeon.springboot.service.posts package 생성
+
+### PostsService.java 생성
+
+```java
+package com.ldayeon.springboot.service.posts;
+
+import com.ldayeon.springboot.domain.posts.PostsRepository;
+import com.ldayeon.springboot.web.dto.PostsSaveRequestDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import javax.transaction.Transactional;
+
+@RequiredArgsConstructor
+@Service
+public class PostsService {
+    private final PostsRepository postsRepository;
+
+    @Transactional
+    public Long save(PostsSaveRequestDto requestDto){
+        return postsRepository.save(requestDto.toEntity()).getId();
+    }
+}
+```
+
++ `@Transactional`
+  + 
+
 <br><br>
 
 > **[참고]**

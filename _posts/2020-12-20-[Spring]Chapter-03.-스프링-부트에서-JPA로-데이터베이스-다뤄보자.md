@@ -770,7 +770,7 @@ public class PostsService {
 
 <br>
 
-## src/test/java에 com.ldayeon.springboot.web.dto package
+## src/test/java에 com.ldayeon.springboot.web package
 
 ### PostsApiControllerTest.java에 추가
 
@@ -911,11 +911,113 @@ Connect를 클릭하면 쿼리를 입력할 수 있는 화면이 나온다.
 
 보통 Entity는 해당 데이의 생성/수정 시간을 포함한다.<br>
 
-→ JPA Auditing을 사용
+  → JPA Auditing을 사용<br>
 
-## LocalDate 사용
+Java의 기본 날짜 타입인 `Date`의 문제점을 개선한 `LocalDate`와 `LocalDateTime`을 사용할 것이다.
 
+## src/main/java에 com.ldayeon.springboot.domain package
 
+### BaseTimeEntity.java 생성
+
+```java
+package com.ldayeon.springboot.domain;
+
+import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.EntityListeners;
+import javax.persistence.MappedSuperclass;
+import java.time.LocalDateTime;
+
+@Getter
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
+public class BaseTimeEntity {
+    @CreatedDate
+    private LocalDateTime createdDate;
+    
+    @LastModifiedDate
+    private LocalDateTime modifiedDate;
+}
+```
+
++ `MappedSupperclass`
+  + JPA Entity 클래스들이 BaseTimeEntity을 상속할 경우 필드들을 칼럼으로 인식하도록 함
++ `EntityListeners`
+  + BaseTimeEntity 클래스에 Auditing 기능을 포함시킴
++ `@CreatedDate`, `@ModifiedDate`
+  + Entity가 생성되고 수정될 때 시간이 자동 저장
+
+<br>
+
+## src/main/java에 com.ldayeon.springboot.domain.posts package
+
+### Posts.java 추가
+
+```java
+public class Posts extends BaseTimeEntity { 
+```
+
++ BaseTimeEntity를 상속하도록 설정
+
+<br>
+
+## src/main/java에 com.ldayeon.springboot package
+
+### Application.java
+
+```java
+package com.ldayeon.springboot;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+@EnableJpaAuditing /*추가된 부분*/
+@SpringBootApplication
+public class  Application {
+    public static void main(String[] args){
+        SpringApplication.run(Application.class,args);
+    }
+}
+
+```
+
++ JPA Auditing 어노테이션들을 활성화
+
+<br>
+
+## src/test/java에 com.ldayeon.springboot.domain.posts package
+
+### PostsRepositoryTest.java에 추가
+
+```java
+@Test
+public void BaseTimeEntity_등록(){
+    //given
+    LocalDateTime now = LocalDateTime.of(2019, 6,4,0,0,0);
+    postsRepository.save(Posts.builder()
+                         .title("title")
+                         .content("content")
+                         .author("author")
+                         .build());
+
+    //when
+    List<Posts> postsList = postsRepository.findAll();
+
+    //then
+    Posts posts = postsList.get(0);
+
+    System.out.println(">>>>createDate="+posts.getCreatedDate()+", modifiedDate="+posts.getModifiedDate());
+    assertThat(posts.getCreatedDate()).isAfter(now);
+    assertThat(posts.getModifiedDate()).isAfter(now);
+}
+
+```
+
++ `Posts`가 `BaseTimeEntity`를 상속받았기 때문에 생성/수정 시간 필드를 가지고 있음
 
 <br><br>
 

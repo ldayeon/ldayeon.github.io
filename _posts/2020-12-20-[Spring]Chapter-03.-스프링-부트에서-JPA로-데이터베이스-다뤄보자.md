@@ -878,6 +878,45 @@ public class PostsApiControllerTest {
 
 <br>
 
+## src/main/resources
+
+#### application.properties 추가
+
+```java
+spring.jpa.show_sql = true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+/*추가된 부분(여기부터)*/
+spring.h2.console.enabled=true
+/*추가된 부분(여기까지)*/
+```
+
++ 데이터베이스 H2는 메모리에서 실행하기 때문에 직접 접근하려면 웹 콘솔을 사용해야 함
++ 웹 콘솔 옵션 활성화
+
+<br>
+
+### 웹 콘솔
+
+`http://localhost:8080/h2-console/`로 접속하면 아래와 같은 웹 콘솔에 접근할 수 있다.
+
+![캡처](https://user-images.githubusercontent.com/37764581/103437948-b9ab6e00-4c70-11eb-96ca-dc02ef986b18.GIF)
+
+Connect를 클릭하면 쿼리를 입력할 수 있는 화면이 나온다.
+
+![화면 캡처 2021-01-01 203519](https://user-images.githubusercontent.com/37764581/103437956-e3fd2b80-4c70-11eb-8bbf-64a5d2a9f3fd.png)
+
+<br><br>
+
+# 5. JPA Auditing으로 생성시간/수정시간 자동화하기
+
+보통 Entity는 해당 데이의 생성/수정 시간을 포함한다.<br>
+
+→ JPA Auditing을 사용
+
+## LocalDate 사용
+
+
+
 <br><br>
 
 > **[참고]**

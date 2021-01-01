@@ -447,7 +447,436 @@ public class PostsService {
 ```
 
 + `@Transactional`
-  + 
+  + 데이터베이스의 상태를 변경시키는 작업 또는 한번엥 수행되어야 하는 연산
+  + 클래스 또는 메소드에 선언할 수 있음
+  + 실행 도중 문제가 생기면 Rollback
+
+<br>
+
+## src/main/java에 com.ldayeon.springboot.web.dto package
+
+### PostsSaveRequestDto.java 생성
+
+```java
+package com.ldayeon.springboot.web.dto;
+
+import com.ldayeon.springboot.domain.posts.Posts;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+public class PostsSaveRequestDto {
+    private String title;
+    private String content;
+    private String author;
+
+    @Builder
+    public PostsSaveRequestDto(String title, String content, String author){
+        this.title=title;
+        this.content=content;
+        this.author=author;
+    }
+
+    public Posts toEntity() {
+        return Posts.builder().title(title)
+                .content(content)
+                .author(author)
+                .build();
+    }
+}
+```
+
++ Entity를 request/response 클래스로 사용하지 않는 이유
+  + request/response 용 Dto는 View를 위한 클래스라 자주 변경하게 됨
+  + Entity는 데이터베이스와 맞닿은 클래스이므로 변경에 예민하지 않게 설계하기 위해서임
+  + View Layer와 DB Layer의 역할을 확실히 분리해야 함
+
+<br>
+
+## src/test/java에 com.ldayeon.springboot.web package
+
+### PostsApiContollerTest.java 생성
+
+```java
+package com.ldayeon.springboot.web;
+
+import com.ldayeon.springboot.domain.posts.Posts;
+import com.ldayeon.springboot.domain.posts.PostsRepository;
+import com.ldayeon.springboot.web.dto.PostsSaveRequestDto;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class PostsApiControllerTest {
+
+    @LocalServerPort
+    private int port;
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Autowired
+    private PostsRepository postsRepository;
+
+    @After
+    public void tearDown() throws Exception{
+        postsRepository.deleteAll();
+    }
+
+    @Test
+    public void Posts_등록된다() throws Exception{
+        //given
+        String title = "title";
+        String content = "content";
+        PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
+                .title(title)
+                .content(content)
+                .author("author")
+                .build();
+        String url = "http://localhost:"+port+"/api/v1/posts";
+
+        //when
+        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url, requestDto, Long.class);
+
+        //then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isGreaterThan(0L);
+        List<Posts> all = postsRepository.findAll();
+        assertThat(all.get(0).getTitle()).isEqualTo(title);
+        assertThat(all.get(0).getContent()).isEqualTo(content);
+    }
+}
+```
+
++ `assertThat(all.get(0).getTitle()).isEqualTo(title)`
+  + 전체 포스트 중 첫 번째 포스트의 제목을 "title"과 확인
+
+<br>
+
+## src/main.java에 com.ldayeon.springboot.web package
+
+### PostsApiControlelr.java 추가
+
+```java
+package com.ldayeon.springboot.web;
+
+import com.ldayeon.springboot.service.posts.PostsService;
+import com.ldayeon.springboot.web.dto.PostsSaveRequestDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+@RequiredArgsConstructor
+@RestController
+public class PostsApiController {
+    private final PostsService postsService;
+
+    @PostMapping("/api/v1/posts")
+    public Long save(@RequestBody PostsSaveRequestDto requestDto){
+        return postsService.save(requestDto);
+    }
+/*추가된 부분(여기부터)*/
+    @PutMapping("/api/v1/posts/{id}")
+    public Long update(@PathVariable Long id, @RequestBody PostsUpdateRequestDto requestDto){
+        return postsService.update(id, requestDto);
+    }
+
+    @GetMapping("/api/v1/posts/{id}")
+    public PostsResponseDto findById(@PathVariable Long id){
+        return postsService.findById(id);
+    }
+/*추가된 부분(여기까지)*/
+}
+
+```
+
++ `@PutMapping`
+  + PUT HTTP request를 처리하기 위한 Annotation
++ `@GetMapping`
+  + GET HTTP request를 처리하기 위한 Annotation
+
+<br>
+
+## src/main/java에 com.ldayeon.springboot.web.dto package
+
+### PostsResponseDto.java  생성
+
+```java
+package com.ldayeon.springboot.web.dto;
+
+import com.ldayeon.springboot.domain.posts.Posts;
+import lombok.Getter;
+
+@Getter
+public class PostsResponseDto {
+    private Long id;
+    private String title;
+    private String content;
+    private String author;
+    
+    public PostsResponseDto(Posts entity){
+        this.id = entity.getId();
+        this.title = entity.getTitle();
+        this.content = entity.getContent();
+        this.author = entity.getAuthor();
+    }
+}
+```
+
++ Entity의 필드 중 일부만 사용
+
+<br>
+
+## src/main/java에 com.ldayeon.springboot.web.dto package
+
+### PostsUpadateRequestDto.java 생성
+
+```java
+package com.ldayeon.springboot.web.dto;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+public class PostsUpdateRequestDto {
+    private String title;
+    private String content;
+
+    @Builder
+    public PostsUpdateRequestDto(String title, String content){
+        this.title = title;
+        this.content = content;
+    }
+}
+```
+
+<br>
+
+## src/main/java에 com.ldayeon.springboot.domain.posts package
+
+### Posts.java 추가
+
+```java
+package com.ldayeon.springboot.domain.posts;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Getter
+@NoArgsConstructor
+@Entity
+public class Posts {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(length=500, nullable = false)
+    private String title;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String content;
+
+    private String author;
+
+    @Builder
+    public Posts(String title, String content, String author){
+        this.title=title;
+        this.content=content;
+        this.author=author;
+    }
+    /*추가된 부분(여기부터)*/
+    public void update(String title, String content){
+        this.title = title;
+        this.content = content;
+    }
+    /*추가된 부분(여기까지)*/
+}
+```
+
+<br>
+
+## src/main/java에 com.ldayeon.springboot.service.posts package
+
+### PostsService.java 추가
+
+```java
+package com.ldayeon.springboot.service.posts;
+
+import com.ldayeon.springboot.domain.posts.Posts;
+import com.ldayeon.springboot.domain.posts.PostsRepository;
+import com.ldayeon.springboot.web.dto.PostsResponseDto;
+import com.ldayeon.springboot.web.dto.PostsSaveRequestDto;
+import com.ldayeon.springboot.web.dto.PostsUpdateRequestDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import javax.transaction.Transactional;
+
+@RequiredArgsConstructor
+@Service
+public class PostsService {
+    private final PostsRepository postsRepository;
+
+    @Transactional
+    public Long save(PostsSaveRequestDto requestDto){
+        return postsRepository.save(requestDto.toEntity()).getId();
+    }
+/*추가된 부분(여기부터)*/
+    @Transactional
+    public Long update(Long id, PostsUpdateRequestDto requestDto){
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("해당 게시글이 없습니다. id ="+id));
+
+        posts.update(requestDto.getTitle(), requestDto.getContent());
+
+        return id;
+    }
+
+    public PostsResponseDto findById (Long id){
+        Posts entity = postsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id="+id));
+
+        return new PostsResponseDto(entity);
+    }
+/*추가된 부분(여기까지)*/
+}
+
+```
+
++ JPA의 영속성 컨텍스트
+  + update 기능에서 쿼리를 날리는 부분이 없음
+  + Entity를 영구 저장하는 환경
+  + JPA의 엔티티 매니저가 활성화된 상태로 트랜잭션 안에서 데이터베이스에서 데이터를 가져오면 영속성 컨텍스트 유지된 상태
+  + 이 상태에서 데이터의 값을 변경하면 트랜잭션이 끝나는 시점에 해당 테이블에 변경된 사항 적용
+  + 때문에 Update 기능은 쿼리를 날리지 않아도 됨
+    + 이러한 개념을 '더티 체킹'이라고 함
+
+<br>
+
+## src/test/java에 com.ldayeon.springboot.web.dto package
+
+### PostsApiControllerTest.java에 추가
+
+```java
+package com.ldayeon.springboot.web;
+
+import com.ldayeon.springboot.domain.posts.Posts;
+import com.ldayeon.springboot.domain.posts.PostsRepository;
+import com.ldayeon.springboot.web.dto.PostsSaveRequestDto;
+import com.ldayeon.springboot.web.dto.PostsUpdateRequestDto;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class PostsApiControllerTest {
+
+    @LocalServerPort
+    private int port;
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Autowired
+    private PostsRepository postsRepository;
+
+    @After
+    public void tearDown() throws Exception{
+        postsRepository.deleteAll();
+    }
+
+    @Test
+    public void Posts_등록된다() throws Exception{
+        //given
+        String title = "title";
+        String content = "content";
+        PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
+                .title(title)
+                .content(content)
+                .author("author")
+                .build();
+        String url = "http://localhost:"+port+"/api/v1/posts";
+
+        //when
+        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url, requestDto, Long.class);
+
+        //then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isGreaterThan(0L);
+        List<Posts> all = postsRepository.findAll();
+        assertThat(all.get(0).getTitle()).isEqualTo(title);
+        assertThat(all.get(0).getContent()).isEqualTo(content);
+    }
+/*추가된 부분(여기부터)*/
+    @Test
+    public void Posts_수정된다() throws Exception{
+        //given
+        Posts savedPosts = postsRepository.save(Posts.builder()
+        .title("title")
+        .content("content")
+        .author("author")
+        .build());
+
+        Long updateId = savedPosts.getId();
+        String expectedTitle = "title2";
+        String expectedContent="content2";
+
+        PostsUpdateRequestDto requestDto = PostsUpdateRequestDto.builder()
+                .title(expectedTitle)
+                .content(expectedContent)
+                .build();
+
+        String url = "http://localhost:"+port+"/api/v1/posts/"+updateId;
+
+        HttpEntity<PostsUpdateRequestDto> requestEntity = new HttpEntity<>(requestDto);
+
+        //when
+        ResponseEntity<Long> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, Long.class);
+
+        //then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isGreaterThan(0L);
+
+        List<Posts> all = postsRepository.findAll();
+        assertThat(all.get(0).getTitle()).isEqualTo(expectedTitle);
+        assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
+    }
+/*추가된 부분(여기까지)*/
+}
+```
+
+<br>
 
 <br><br>
 

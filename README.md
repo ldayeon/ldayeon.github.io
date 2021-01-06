@@ -5,7 +5,7 @@
 + Cloud
 + BigData
 + Algorithm for Coding Test
-+ TOEIC or OPIC
++ Daily Commit <🌟
 
 ---
 

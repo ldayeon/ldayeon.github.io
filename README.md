@@ -3,7 +3,6 @@
 👩‍🎓 List
 + Spring Framework
 + Cloud
-+ BigData
 + Algorithm for Coding Test
 + Daily Commit <🌟
 

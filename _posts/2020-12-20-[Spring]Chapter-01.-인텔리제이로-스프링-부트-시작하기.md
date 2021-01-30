@@ -1,6 +1,6 @@
 ---
 title:  "[Spring] Chapter 01. 인텔리제이로 스프링 부트 시작하기"
-subtitle: "스프링 부트와 AWS로 혼자 구현하는 웹 서비스"
+excerpt: "스프링 부트와 AWS로 혼자 구현하는 웹 서비스"
 
 categories: Spring
 tags:

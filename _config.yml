@@ -27,7 +27,7 @@ repository               : "ldayeon/ldayeon.github.io"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : "/assets/images/cat.png"
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
-# breadcrumbs            : false # true, false (default)
+breadcrumbs              : true #, false (default)
 words_per_minute         : 200
 comments:
   provider               : "disqus"
@@ -172,6 +172,7 @@ exclude:
   - tmp
   - /docs # ignore Minimal Mistakes /docs
   - /test # ignore Minimal Mistakes /test
+  - vender/
 keep_files:
   - .git
   - .svn

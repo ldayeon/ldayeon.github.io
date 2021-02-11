@@ -1,5 +1,10 @@
 # 공부_기록_블로그(ldayeon.github.io)
 
+💫 Link
+https://ldayeon.github.io/
+<br>
+---
+
 👩‍🎓 List
 + Spring Framework
 + Cloud

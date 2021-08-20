@@ -277,8 +277,8 @@ defaults:
       layout: single
       author_profile: true
       sidebar:
-      title: "Categories"
-      nav: main
+        title: "Categories"
+        nav: main
       read_time: true
       comments: true
       share: true

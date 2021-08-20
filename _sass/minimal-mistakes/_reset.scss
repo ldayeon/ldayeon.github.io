@@ -10,17 +10,17 @@ html {
   background-color: $background-color;
   font-size: 18px;
 
-  @include breakpoint($medium) {
-    font-size: 18px;
-  }
+  // @include breakpoint($medium) { //반응형 웹 불편해서 주석처리
+  //   font-size: 18px;
+  // }
 
-  @include breakpoint($large) {
-    font-size: 18px;
-  }
+  // @include breakpoint($large) {
+  //   font-size: 18px;
+  // }
 
-  @include breakpoint($x-large) {
-    font-size: 19px;
-  }
+  // @include breakpoint($x-large) {
+  //   font-size: 19px;
+  // }
 
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;

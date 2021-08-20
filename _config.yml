@@ -276,6 +276,9 @@ defaults:
     values:
       layout: single
       author_profile: true
+      sidebar:
+      title: "Categories"
+      nav: main
       read_time: true
       comments: true
       share: true

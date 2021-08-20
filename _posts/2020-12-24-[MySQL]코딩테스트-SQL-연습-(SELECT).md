@@ -2,7 +2,7 @@
 title:  "[MySQL] 코딩테스트 SQL 연습 (SELECT)"
 subtitle: "SELECT"
 
-categories: Code
+categories: coding_test
 tags:
 - MySQL
 - SQL

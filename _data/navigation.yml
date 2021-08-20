@@ -1,30 +1,10 @@
 # main links
 main:
-  - title: "SAP"
-    url: "/sap/"
-    children:
-    - title: "ABAP"
-      url: "/sap/abap/"
-    - title: "Fiori"
-      url: "/sap/fiori/"
-    - title: "Work"
-      url: "/sap/work/"
+  - title: "About"
+    url: "/about/"
 
-  - title: "Algorithm"
-    url: "/algorithm/"
-    children:
-    - title: "Basic"
-      url: "/algorithm/basic/"
-    - title: "Coding Test"
-      url: "/algorithm/coding_test/"
-      
-  - title: "Web"
-    url: "/web/"
-    children:
-    - title: "Spring"
-      url: "/web/spring/"
-    - title: "인프런-JS"
-      url: "/web/js/"
+  - title: "Categories"
+    url: "/categories/"
   
   # - title: "Sample Posts"
   #   url: /year-archive/

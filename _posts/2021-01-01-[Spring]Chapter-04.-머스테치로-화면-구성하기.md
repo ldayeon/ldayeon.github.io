@@ -2,7 +2,7 @@
 title:  "[Spring] Chapter 04. 머스테치로 화면 구성하기"
 subtitle: "스프링 부트와 AWS로 혼자 구현하는 웹 서비스"
 
-categories: Spring
+categories: spring
 tags:
 - Spring
 - Spring Boot
@@ -11,7 +11,6 @@ tags:
 
 last_modified_at:   2021-01-01
 ---
-
 <br>
 
 # 1. 서버 템플릿 엔진과 머스테치 소개
@@ -51,11 +50,7 @@ JSP와 같이 HTML을 만들어주는 템플릿 언어<br>
 + 루비, 자바스크립트, 파이썬, PHP, 자바, 펄, ASP 등 다양한 언어 지원
   + 자바에 사용 - 서버 템플릿 엔진
   + 자바스크립트에 사용 - 클라이언트 템플릿 엔진
-+ 
-
-
-
-
++
 
 ### <br><br>
 

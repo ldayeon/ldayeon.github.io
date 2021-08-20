@@ -2,7 +2,7 @@
 title:  "[Spring]Chapter 03. 스프링 부트에서 JPA로 데이터베이스 다뤄보자"
 subtitle: "스프링 부트와 AWS로 혼자 구현하는 웹 서비스"
 
-categories: Spring
+categories: spring
 tags:
 - Spring
 - Spring Boot
@@ -11,33 +11,25 @@ tags:
 
 last_modified_at:   2020-12-24
 ---
-
 <br>
 
 + SQL Mapper
 
   + 객체와 관계형 데이터베이스의 데이터를 자동으로 연결해주는 것
-
   + ex. MyBatis
-
   + SI환경에서 주로 사용
 
     <br>
-
 + ORM(Object Relational Mapping)
 
   + 객체 관계 매핑
-
   + 데이터베이스와 객체 지향 프로그래밍 언어 간의 호환되지 않는 데이터를 변환하는 프로그래밍 기법
-
   + 기존의 Mapper보다 객체 지향적인 프로그래밍을 가능하게 함
 
     <br>
-
 + JPA
 
   + Java 표준 ORM
-
   + 쿠팡, 우아한 형제들, NHN 등 자사 서비스 개발 기업에서 주로 사용
 
     <br><br>
@@ -49,7 +41,7 @@ last_modified_at:   2020-12-24
 ### 문제 배경
 
 관계형 데이터베이스가 SQL만 인식할 수 있기 때문에 기본적인 CRUD(Create, Read, UPdate, Delete) SQL을 매번 생성해야 함.<br>
-	→ 애플리케이션 코드 < SQL 코드
+→ 애플리케이션 코드 < SQL 코드
 
 <br>
 
@@ -77,7 +69,7 @@ last_modified_at:   2020-12-24
 
 JPA를 사용하기 위해서는 구현체 필요 ex. Hibernate, Eclipse Link 등 <br>
 
-  → 하지만 Spring에서는 구현체를 직접 다루지 않고 **Spring Data JPA**라는 모듈 이용<br><br>
+→ 하지만 Spring에서는 구현체를 직접 다루지 않고 **Spring Data JPA**라는 모듈 이용<br><br>
 
 `JPA ← Hibernate ← Spring Data JPA` 의 관계성을 가짐<br>
 
@@ -104,8 +96,6 @@ JPA를 사용하기 위해서는 구현체 필요 ex. Hibernate, Eclipse Link �
 2. 객체지향 프로그래밍 가능
 
 <br>
-
-
 
 > #### 👩‍💻 여기서부터 본격적이 웹 사이트 구축
 
@@ -156,7 +146,7 @@ dependencies { //프로젝트에 필요한 의존성 선언(버전 명시하지 
 
 ```
 
-+ `Spring-boot-starter-data-jpa` 
++ `Spring-boot-starter-data-jpa`
   + 스프링 부트용 Spring Data JPA 추상화 라이브러리
   + 스프링 부트 버전에 맞춰 자동으로 JPA관련 라이브러리들의 버전을 관리
 + `h2`
@@ -203,7 +193,7 @@ public class Posts {
     private String content;
 
     private String author;
-    
+  
     @Builder
     public Posts(String title, String content, String author){
         this.title=title;
@@ -213,7 +203,7 @@ public class Posts {
 }
 ```
 
-+ `Posts class` 
++ `Posts class`
   + 실제 DB의 테이블과 매칭될 클래스
   + Entity 클래스
   + DB에 쿼리를 날리는 것 X → Entity 클래스의 수정을 통해 작업 O
@@ -284,7 +274,7 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
   + `JpaRepository<Entity class, PK타입>`을 상송하면 기본적인 CRUD 메소드가 자동 생성
   + Entity 클래스와 Entity Repository는 함께 위치해야 함
 
-## src/test/java에 com.ldayeon.springboot.domain.posts package 생성 
+## src/test/java에 com.ldayeon.springboot.domain.posts package 생성
 
 ### PostsRepositoryTest.java 생성
 
@@ -554,7 +544,7 @@ public class PostsApiControllerTest {
         ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url, requestDto, Long.class);
 
         //then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getStatuscoding_test()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isGreaterThan(0L);
         List<Posts> all = postsRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(title);
@@ -627,7 +617,7 @@ public class PostsResponseDto {
     private String title;
     private String content;
     private String author;
-    
+  
     public PostsResponseDto(Posts entity){
         this.id = entity.getId();
         this.title = entity.getTitle();
@@ -832,7 +822,7 @@ public class PostsApiControllerTest {
         ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url, requestDto, Long.class);
 
         //then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getStatuscoding_test()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isGreaterThan(0L);
         List<Posts> all = postsRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(title);
@@ -865,7 +855,7 @@ public class PostsApiControllerTest {
         ResponseEntity<Long> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, Long.class);
 
         //then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getStatuscoding_test()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isGreaterThan(0L);
 
         List<Posts> all = postsRepository.findAll();
@@ -911,7 +901,7 @@ Connect를 클릭하면 쿼리를 입력할 수 있는 화면이 나온다.
 
 보통 Entity는 해당 데이의 생성/수정 시간을 포함한다.<br>
 
-  → JPA Auditing을 사용<br>
+→ JPA Auditing을 사용<br>
 
 Java의 기본 날짜 타입인 `Date`의 문제점을 개선한 `LocalDate`와 `LocalDateTime`을 사용할 것이다.
 
@@ -937,7 +927,7 @@ import java.time.LocalDateTime;
 public class BaseTimeEntity {
     @CreatedDate
     private LocalDateTime createdDate;
-    
+  
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 }

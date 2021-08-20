@@ -2,7 +2,7 @@
 title:  "[Spring] Chapter 01. 인텔리제이로 스프링 부트 시작하기"
 excerpt: "스프링 부트와 AWS로 혼자 구현하는 웹 서비스"
 
-categories: Spring
+categories: spring
 tags:
 - Spring
 - Spring Boot
@@ -11,9 +11,6 @@ tags:
 
 last_modified_at:   2020-12-20
 ---
-
-
-
 <br>
 
 # 1.프로젝트 생성하기
@@ -21,7 +18,7 @@ last_modified_at:   2020-12-20
 ![GroupId와 ArtifactId](https://user-images.githubusercontent.com/37764581/102707847-c7144000-42e1-11eb-84cf-e8db7e8477b5.png)
 
 + GroupId : 프로젝트를 구분하는 고유 식별 이름
-  
+
   + package 명명 규칙을 따라야 함
 + ArtifactId : 버전 정보를 생략한 jar 파일 이름
 
@@ -108,8 +105,6 @@ dependencies {
 
 + .gradle 폴더 : Gradle이 사용하는 폴더로 task로 생성된 파일이 저장되는 폴더
 + .idea 폴더 : Intellij의 IDE를 사용 시 해당 프로젝트의 설정값들이 저장되는 폴더
-
-  
 
 <br><br><br>
 

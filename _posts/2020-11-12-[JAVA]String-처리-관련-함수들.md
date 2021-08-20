@@ -2,11 +2,11 @@
 title:  "[JAVA]String 처리 관련 함수들 정리"
 subtitle: "JAVA 코딩 테스트"
 
-categories: Code
+categories: coding_test
 tags:
 - JAVA
 - 코딩테스트
-author_profile: true
+
 last_modified_at:   2020-11-12
 ---
 

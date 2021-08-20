@@ -2,7 +2,7 @@
 title:  "[Spring] Chapter 02. 스프링 부트에서 테스트 코드를 작성하자"
 subtitle: "스프링 부트와 AWS로 혼자 구현하는 웹 서비스"
 
-categories: Spring
+categories: spring
 tags:
 - Spring
 - Spring Boot
@@ -11,7 +11,6 @@ tags:
 
 last_modified_at:   2020-12-20
 ---
-
 <br>
 
 # 1. 테스트 코드
@@ -71,7 +70,7 @@ public class Application { //main class
 
 ```
 
-+ `@SpringBootApplication` 
++ `@SpringBootApplication`
   + Springboot의 자동설정
   + 스프링 Bean 읽기&생성 모두 자동으로 설정
   + 이 코드가 있는 곳부터 설정을 읽음 → 항상 프로젝트의 최상단에 있어야 함
@@ -98,7 +97,7 @@ public class HelloController {
 }
 ```
 
-+ `@RestController` 
++ `@RestController`
   + JSON를 반환하는 Controller로 만듦
   + `@ResponseBody`를 메소드마다 선언하지 않아도 됨
 + `@GetMapping`
@@ -146,7 +145,7 @@ public class HelloControllerTest {
   + JUnit에 내장된 실행자 외에 다른 실행자를 실행시킴
   + 여기서는 스프링 실행자인 'SpringRunner' 사용
     + SpringBootTest와 JUnit 사이에 연결자 역할
-+ `@WebMvcTest(controllers = HelloController.class)` 
++ `@WebMvcTest(controllers = HelloController.class)`
   + 사용 가능 Annotation : @Controller, @ControllerAdvice
   + 사용 불가 Annotation : @Service, @Component, @Repository
 + `@Autowired`
@@ -253,8 +252,8 @@ public class HelloResponseDtoTest {
 > ```
 > Starting Gradle Daemon...
 > Gradle Daemon started in 3 s 745 ms
-> 
-> > Task :compileJava
+>
+>> Task :compileJava
 > C:\Users\user\IdeaProjects\aws-spring-webservice\src\main\java\com\ldayeon\springboot\web\dto\HelloResponseDto.java:9: error: variable name not initialized in the default constructor
 >     private final String name;
 >                          ^
@@ -262,17 +261,17 @@ public class HelloResponseDtoTest {
 >     private final int amount;
 >                       ^
 > 2 errors
-> > Task :compileJava FAILED
+>> Task :compileJava FAILED
 > FAILURE: Build failed with an exception.
 > * What went wrong:
 > Execution failed for task ':compileJava'.
-> > Compilation failed; see the compiler error output for details.
+>> Compilation failed; see the compiler error output for details.
 > * Try:
 > Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
 > * Get more help at https://help.gradle.org
 > BUILD FAILED in 15s
 > 1 actionable task: 1 executed
-> 
+>
 > ```
 >
 > 위와 같이 오류가 발생했고 저자의 Github의 Issue를 참고하였다. Gradle의 버전 차이로 발생하는 오류였다.
@@ -283,7 +282,8 @@ public class HelloResponseDtoTest {
 > gradlew wrapper --gradle-version 4.10.2
 > ```
 >
-> > [참고] <a href="https://github.com/jojoldu/freelec-springboot2-webservice/issues/2">https://github.com/jojoldu/freelec-springboot2-webservice/issues/2</a>
+>> [참고] <a href="https://github.com/jojoldu/freelec-springboot2-webservice/issues/2">https://github.com/jojoldu/freelec-springboot2-webservice/issues/2</a>
+>>
 
 <br>
 
@@ -303,7 +303,7 @@ public class HelloController {
     public String hello(){
         return "hello";
     }
-    
+  
 	/*추가된 부분(여기부터)*/
     @GetMapping("/hello/dto")
     public HelloResponseDto helloDto(@RequestParam("name") String name, @RequestParam("amount") int amount){
@@ -315,12 +315,12 @@ public class HelloController {
 ```
 
 + `@RequestParam`
-  +  외부에서 넘긴 파라미터를 가져오는 Annotation
+  + 외부에서 넘긴 파라미터를 가져오는 Annotation
   + 외부에서 `name`이라는 이름으로 넘긴 값을 메소드 파라미터 변수 `name`에 저장
 
 <br>
 
-### HelloControllerTest.java에 Test code 추가
+### HelloControllerTest.java에 Test coding_test 추가
 
 ```java
 package com.ldayeon.springboot.web;
@@ -355,7 +355,7 @@ public class HelloControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(hello));
     }
-    
+  
     /*추가된 부분(여기부터)*/
     @Test
     public void helloDto가_리턴된다() throws Exception{
@@ -390,7 +390,6 @@ public class HelloControllerTest {
 데이터를 저장하거나 전송할 때 많이 사용되는 경량의 데이터 교환 형식
 
 + Server와 Client 간의 교류에서 일반적으로 사용
-
 + *Postman에서 사용했던 parameter post를 넘기는 방식과 같은 방식*
 
   ```json

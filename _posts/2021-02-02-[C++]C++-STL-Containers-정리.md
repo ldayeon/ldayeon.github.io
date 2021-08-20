@@ -1,12 +1,12 @@
 ---
 title:  "[C++] 코딩테스트를 위한 STL Containers 정리 (vector, queue, stack, list, set, map)"
 excerpt: "C++ STL Containers"
-categories: Code
+categories: coding_test
 tags: 
 - C++ STL Container
 - vector, queue, stack, list
 - set, map
-author_profile: true
+
 ---
 
  코딩테스트에서 자주 쓰이는 `vector`, `queue`, `stack`부터 활용할 수 있으면 도움이 될 `list`, `set`, `map`까지 정리해보겠다. 여러 C++ STL Container들을 사용할 수 있으면 문제의 유형에 따라 로직을 짜는데 도움이 될 것 같다..

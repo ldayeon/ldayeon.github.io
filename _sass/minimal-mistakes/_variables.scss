@@ -13,9 +13,9 @@ $paragraph-indent: false !default; // true, false (default)
 $indent-var: 1.3em !default;
 
 /* system typefaces */
-$serif: 'KoPubDotumMediumGeorgia', Times, serif !default;
-$sans-serif: 'KoPubDotumMediumGeorgia', BlinkMacSystemFont, 'Noto Sans KR', sans-serif !default; //-apple-system,
-$monospace: 'KoPubDotumMediumGeorgia', Monaco, Consolas, "Lucida Console", monospace !default;
+$serif: 'KoPubDotumMedium', Times, serif !default;
+$sans-serif: -apple-system, 'KoPubDotumMedium', BlinkMacSystemFont, 'Noto Sans KR', sans-serif !default; 
+$monospace: 'KoPubDotumMedium', Monaco, Consolas, "Lucida Console", monospace !default;
 
 /* sans serif typefaces */
 $sans-serif-narrow: $sans-serif !default;

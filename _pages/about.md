@@ -2,8 +2,8 @@
 title: "About 'ldayeon'"
 permalink: /about/
 layout: single
-class : wide
-sidebar_main: true
+
+
 ---
 ## Skills
 

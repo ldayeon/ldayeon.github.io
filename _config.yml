@@ -300,3 +300,5 @@ defaults:
       comments: false
       share: true
       related: false
+      classes: wide
+      sidebar_main: true

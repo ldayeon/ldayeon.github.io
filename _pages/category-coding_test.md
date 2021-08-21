@@ -2,6 +2,7 @@
 title: "Coding Test"
 layout: archive
 permalink: categories/coding_test
+class : wide
 author_profile: true
 sidebar_main: true
 ---

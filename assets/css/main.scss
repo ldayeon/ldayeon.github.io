@@ -8,3 +8,17 @@
 @import "minimal-mistakes"; // main partials
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+@font-face {
+    font-family: 'LAB디지털';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/LAB디지털.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KoPubDotumMedium';
+     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/KoPubDotumMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

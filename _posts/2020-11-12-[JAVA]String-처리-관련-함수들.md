@@ -25,7 +25,7 @@ last_modified_at:   2020-11-12
    	System.out.println("같음");
    ```
 2. 두 String의 대소관계를 비교할 수 있는 함수로는 `compareTo()`가 있다.
-   반환값에 따라 method를 호출한 String이 사전적으로 얼마나 더 앞에 있는지 알 수 있다. 대소문자 구분하지 않고 비교하려면 `compareToIgnoreCase()`를 사용하면 된다.
+   반환값에 따라 method를 호출한 String이 사전적으로 얼마나 더 큰지 알 수 있다. 대소문자 구분하지 않고 비교하려면 `compareToIgnoreCase()`를 사용하면 된다.
 
    ```java
    String str1="abcde";
